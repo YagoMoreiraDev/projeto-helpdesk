@@ -1,0 +1,70 @@
+<!-- Alerta de erro (opcional) -->
+<div *ngIf="errorMsg" class="alert alert-danger mb-2" role="alert">
+    {{ errorMsg }}
+</div>
+
+<!-- Modal -->
+<div class="modal fade" [id]="modalId" tabindex="-1" aria-labelledby="criarChamadoTitle" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content shadow-lg modal-elev">
+            <div class="modal-header border-0 modal-hd">
+                <div class="d-flex align-items-center gap-2">
+                    <h5 class="modal-title text-dark mb-0" id="criarChamadoTitle">Abrir chamado</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-12 col-md-7">
+                            <label class="form-label">Tipo de atendimento <span class="req">*</span></label>
+                            <select class="form-select" formControlName="servicoId"
+                                [class.is-invalid]="f['servicoId'].touched && f['servicoId'].invalid">
+                                <option value="" disabled>Selecione...</option>
+                                <option *ngFor="let s of servicos" [value]="s.id">{{ s.nome }}</option>
+                            </select>
+                            <div class="invalid" *ngIf="f['servicoId'].touched && f['servicoId'].invalid">
+                                Selecione um tipo de atendimento.
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-5">
+                            <label class="form-label">Prioridade</label>
+                            <select class="form-select" formControlName="prioridade">
+                                <option *ngFor="let p of prioridades" [value]="p.id">{{ p.nome }}</option>
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">Descreva sua necessidade <span class="req">*</span></label>
+                            <textarea class="form-control" rows="5" formControlName="descricao"
+                                placeholder="Ex.: Computador não liga desde ontem às 10h..."
+                                [class.is-invalid]="f['descricao'].touched && f['descricao'].invalid"></textarea>
+                            <div class="d-flex justify-content-between">
+                                <div class="invalid" *ngIf="f['descricao'].touched && f['descricao'].invalid">
+                                    Escreva pelo menos 10 caracteres.
+                                </div>
+                                <small class="text-muted">Informe detalhes: quando começou, equipamentos, mensagens
+                                    etc.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                        [disabled]="loading">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-helpdesk" [disabled]="form.invalid || loading">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status"
+                            aria-hidden="true"></span>
+                        Enviar chamado
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

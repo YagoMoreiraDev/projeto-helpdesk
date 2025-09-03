@@ -1,0 +1,12 @@
+<!-- layout.component.html -->
+<app-header-menu></app-header-menu>
+
+<!-- Deixe o modal aqui para poder abrir de qualquer página -->
+<app-criar-chamado
+  [solicitanteId]="usuarioLogadoId"
+  (created)="onChamadoCriado($event)"
+  [modalId]="'criarChamadoModal'"
+></app-criar-chamado>
+
+<!-- Aqui entra a página conforme a rota selecionada no menu -->
+<router-outlet></router-outlet>

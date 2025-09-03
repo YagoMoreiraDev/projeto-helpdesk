@@ -1,0 +1,52 @@
+/* Paleta para combinar com o header petróleo */
+:root{
+  --hd-bg: #06292F;
+  --hd-accent: #4FD1C5;
+  --hd-soft: rgba(79,209,197,.15);
+
+  --ok:#198754;        /* success */
+  --warn:#ffc107;      /* warning */
+  --err:#dc3545;       /* danger  */
+}
+
+/* KPIs */
+.kpi-card{
+  border:0; border-radius: 16px; overflow:hidden;
+  box-shadow: 0 6px 24px rgba(0,0,0,.05);
+}
+.kpi-card .card-body{ padding: 1.1rem 1.25rem; }
+.kpi-title{ font-weight:600; color:#6c757d; }
+.kpi-value{ font-size: 2rem; font-weight: 800; line-height:1; margin-top:.25rem; }
+.kpi-sub{ color:#adb5bd; font-size:.85rem; }
+
+.kpi-success .kpi-value{ color: var(--ok); }
+.kpi-warning .kpi-value{ color: #d39e00; }
+.kpi-danger  .kpi-value{ color: var(--err); }
+
+/* Barras “total por dia” */
+.bars{ display:flex; flex-direction:column; gap:.5rem; }
+.bars-row{ display:grid; grid-template-columns: 62px 1fr 40px; align-items:center; gap:.5rem; }
+.bars-label{ color:#6c757d; font-weight:600; font-size:.9rem; }
+.bars-track{ background:#f1f3f5; border-radius: 999px; height: 10px; overflow:hidden; }
+.bars-fill{
+  height:100%; background: linear-gradient(90deg, var(--hd-accent), #5eead4);
+  border-radius:999px; transition: width .35s ease;
+}
+.bars-value{ text-align:right; font-weight:700; }
+
+/* Chips do resumo por técnico */
+.chip{
+  display:inline-flex; align-items:center; gap:.5rem;
+  border-radius: 999px; padding:.4rem .75rem; font-weight:700;
+  background:#f1f3f5; color:#343a40;
+}
+.chip-success{ background: rgba(25,135,84,.12); color: var(--ok); }
+.chip-warning{ background: rgba(255,193,7,.15);  color: #d39e00; }
+.chip-danger { background: rgba(220,53,69,.12);  color: var(--err); }
+.chip-num{
+  background:#fff; padding:.2rem .5rem; border-radius:999px; min-width: 2rem;
+  text-align:center; box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+
+/* Cartões gerais */
+.card-header{ background:#fff; border-bottom: 1px solid #edf2f4; }

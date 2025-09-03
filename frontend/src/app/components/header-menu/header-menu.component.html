@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-helpdesk shadow-sm sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/">
+            <img src="helpdesk.png" alt="Logo" class="brand-logo">
+            <span class="brand-text">Helpdesk</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Alternar navegação">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-3 mb-2 mb-lg-0 fw-semibold">
+                <li class="nav-item" *ngFor="let item of items()">
+                    <!-- se for 'Criar Chamado' abrimos modal -->
+                    <a *ngIf="item.route === 'modal:criar-chamado'; else normalLink" class="nav-link nav-anim" href="#"
+                        data-bs-toggle="modal" data-bs-target="#criarChamadoModal">
+                        {{ item.label }}
+                    </a>
+
+                    <ng-template #normalLink>
+                        <a class="nav-link nav-anim" routerLinkActive="active" [routerLink]="item.route"
+                            [routerLinkActiveOptions]="{ exact: true }">
+                            {{ item.label }}
+                        </a>
+                    </ng-template>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

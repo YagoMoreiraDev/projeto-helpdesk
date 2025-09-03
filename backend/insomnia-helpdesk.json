@@ -1,0 +1,329 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-09-03T01:32:25.407165Z",
+  "__export_source": "chatgpt:helpdesk-insomnia",
+  "resources": [
+    {
+      "_id": "wrk_68bcd0a0da3e4",
+      "_type": "workspace",
+      "parentId": null,
+      "name": "Helpdesk API",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_74abd3296d624",
+      "_type": "environment",
+      "parentId": "wrk_68bcd0a0da3e4",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8080",
+        "ids": {
+          "usuarioId": "00000000-0000-0000-0000-000000000000",
+          "chamadoId": "00000000-0000-0000-0000-000000000000",
+          "solicitanteId": "00000000-0000-0000-0000-000000000000",
+          "tecnicoId": "00000000-0000-0000-0000-000000000000",
+          "autorId": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      "environment": {},
+      "metaSortKey": -1710000000000
+    },
+    {
+      "_id": "fld_users_d74260ba03b84",
+      "_type": "request_group",
+      "parentId": "wrk_68bcd0a0da3e4",
+      "name": "Usuarios",
+      "environment": {},
+      "metaSortKey": -1700000000000
+    },
+    {
+      "_id": "fld_tickets_45606e7f9c104",
+      "_type": "request_group",
+      "parentId": "wrk_68bcd0a0da3e4",
+      "name": "Chamados",
+      "environment": {},
+      "metaSortKey": -1690000000000
+    },
+    {
+      "_id": "req_6cf6eb3c938a4",
+      "_type": "request",
+      "parentId": "fld_users_d74260ba03b84",
+      "name": "Criar usuário",
+      "method": "POST",
+      "url": "{{ base_url }}/api/usuarios",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Fulano da Silva\",\n  \"email\": \"fulano@exemplo.com\",\n  \"senha\": \"123456\",\n  \"roles\": [\n    \"USUARIO_COMUM\"\n  ]\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1680000000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_92b2affd827f4",
+      "_type": "request",
+      "parentId": "fld_users_d74260ba03b84",
+      "name": "Atualizar usuário",
+      "method": "PUT",
+      "url": "{{ base_url }}/api/usuarios/{{ ids.usuarioId }}",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Fulano da Silva\",\n  \"email\": \"fulano@exemplo.com\",\n  \"roles\": [\n    \"USUARIO_COMUM\",\n    \"TECNICO\"\n  ]\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1679999999999,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_7ac209a301f14",
+      "_type": "request",
+      "parentId": "fld_users_d74260ba03b84",
+      "name": "Deletar (lógico) usuário",
+      "method": "DELETE",
+      "url": "{{ base_url }}/api/usuarios/{{ ids.usuarioId }}",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1679999999998,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_dc721acd19c34",
+      "_type": "request",
+      "parentId": "fld_users_d74260ba03b84",
+      "name": "Buscar usuário por ID",
+      "method": "GET",
+      "url": "{{ base_url }}/api/usuarios/{{ ids.usuarioId }}",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1679999999997,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_f134de202abc4",
+      "_type": "request",
+      "parentId": "fld_users_d74260ba03b84",
+      "name": "Listar usuários ativos",
+      "method": "GET",
+      "url": "{{ base_url }}/api/usuarios",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1679999999996,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_7a840c12260d4",
+      "_type": "request",
+      "parentId": "fld_tickets_45606e7f9c104",
+      "name": "Abrir chamado (solicitanteId)",
+      "method": "POST",
+      "url": "{{ base_url }}/api/chamados?solicitanteId={{ ids.solicitanteId }}",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"titulo\": \"Impressora não imprime\",\n  \"descricao\": \"Já troquei o cartucho e reiniciei o equipamento.\",\n  \"prioridade\": \"MEDIA\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1679999999995,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_4229b067c4464",
+      "_type": "request",
+      "parentId": "fld_tickets_45606e7f9c104",
+      "name": "Assumir chamado (tecnicoId)",
+      "method": "POST",
+      "url": "{{ base_url }}/api/chamados/{{ ids.chamadoId }}/assumir?tecnicoId={{ ids.tecnicoId }}",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1679999999994,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_da1a40f4ace44",
+      "_type": "request",
+      "parentId": "fld_tickets_45606e7f9c104",
+      "name": "Comentar chamado (autorId)",
+      "method": "POST",
+      "url": "{{ base_url }}/api/chamados/{{ ids.chamadoId }}/comentarios?autorId={{ ids.autorId }}",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"mensagem\": \"Identifiquei papel atolado; iniciando limpeza.\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1679999999993,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_c05e4e8bc01c4",
+      "_type": "request",
+      "parentId": "fld_tickets_45606e7f9c104",
+      "name": "Alterar status (autorId)",
+      "method": "POST",
+      "url": "{{ base_url }}/api/chamados/{{ ids.chamadoId }}/status?autorId={{ ids.autorId }}",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"novoStatus\": \"CONCLUIDO\",\n  \"detalhe\": \"Problema resolvido após limpeza e teste.\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1679999999992,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_ac546010fcb14",
+      "_type": "request",
+      "parentId": "fld_tickets_45606e7f9c104",
+      "name": "Listar meus chamados (solicitante)",
+      "method": "GET",
+      "url": "{{ base_url }}/api/chamados/meus?solicitanteId={{ ids.solicitanteId }}",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1679999999991,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_8b4c0126a3ea4",
+      "_type": "request",
+      "parentId": "fld_tickets_45606e7f9c104",
+      "name": "Listar por técnico",
+      "method": "GET",
+      "url": "{{ base_url }}/api/chamados/tecnico?tecnicoId={{ ids.tecnicoId }}",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1679999999990,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_8bccdedf04f94",
+      "_type": "request",
+      "parentId": "fld_tickets_45606e7f9c104",
+      "name": "Listar todos os chamados",
+      "method": "GET",
+      "url": "{{ base_url }}/api/chamados",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1679999999989,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    }
+  ]
+}

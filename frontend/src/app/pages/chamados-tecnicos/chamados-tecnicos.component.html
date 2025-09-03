@@ -1,0 +1,111 @@
+<div class="tecnicos-wrapper container-fluid py-3">
+
+    <div class="row g-3 panels-hover"><!-- ⬅️ ativa o efeito em grupo -->
+
+        <!-- Em aberto -->
+        <div class="col-12 col-lg-6">
+            <div class="card h-100 shadow-sm fx-card fx-open">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h5 class="m-0">Em aberto</h5>
+                    <span class="badge rounded-pill text-bg-danger">{{ emAberto.length }}</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table align-middle table-hover m-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="fit">#</th>
+                                    <th>Solicitante</th>
+                                    <th>Tipo</th>
+                                    <th class="fit"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let c of emAberto; let i = index" class="row-ghost">
+                                    <td class="text-muted fit">{{ i + 1 }}</td>
+                                    <td class="fw-semibold">{{ c.solicitante }}</td>
+                                    <td class="text-secondary">{{ c.tipo }}</td>
+                                    <td class="fit">
+                                        <button
+                                            class="btn btn-sm btn-primary d-inline-flex align-items-center gap-1 action-fade"
+                                            (click)="onIniciar(c)" title="Iniciar e atribuir para mim">
+                                            <i class="bi bi-play-fill"></i> Iniciar
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="!emAberto.length">
+                                    <td colspan="4" class="text-center text-muted py-4">Nenhum chamado em aberto.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Em andamento -->
+        <div class="col-12 col-lg-6">
+            <div class="card h-100 shadow-sm fx-card fx-progress">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h5 class="m-0">Em andamento ({{ tecnicoAtual }})</h5>
+                    <span class="badge rounded-pill text-bg-warning">{{ emAndamentoDoTecnico.length }}</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table align-middle table-hover m-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="fit">#</th>
+                                    <th>Solicitante</th>
+                                    <th>Descrição</th>
+                                    <th class="nowrap">Data/Hora</th>
+                                    <th class="fit"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let c of emAndamentoDoTecnico; let i = index" class="row-ghost">
+                                    <td class="text-muted fit">{{ i + 1 }}</td>
+                                    <td class="fw-semibold">{{ c.solicitante }}</td>
+                                    <td class="text-secondary">{{ c.descricao }}</td>
+                                    <td class="nowrap">{{ c.dataHora | date:'dd/MM/yy HH:mm' }}</td>
+                                    <td class="fit">
+                                        <div class="btn-group btn-group-sm action-fade" role="group">
+                                            <button class="btn btn-success d-inline-flex align-items-center gap-1"
+                                                (click)="onEncerrar(c)" title="Encerrar (concluir)">
+                                                <i class="bi bi-check2-circle"></i> Encerrar
+                                            </button>
+                                            <button
+                                                class="btn btn-outline-secondary d-inline-flex align-items-center gap-1"
+                                                (click)="onRepassar(c)" title="Repassar (voltar para Em aberto)">
+                                                <i class="bi bi-arrow-counterclockwise"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="!emAndamentoDoTecnico.length">
+                                    <td colspan="5" class="text-center text-muted py-4">Você não tem chamados em
+                                        andamento.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Concluídos -->
+        <div class="col-12">
+            <div class="card shadow-sm fx-card fx-done">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h5 class="m-0">Concluídos ({{ tecnicoAtual }})</h5>
+                    <span class="badge rounded-pill text-bg-success">{{ concluidosDoTecnico.length }}</span>
+                </div>
+                <div class="card-body p-0">
+                    <!-- tabela igual à sua, sem mudanças -->
+                    <!-- ... -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

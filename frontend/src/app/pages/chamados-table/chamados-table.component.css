@@ -1,0 +1,29 @@
+.chamados-wrapper {
+  max-width: 1200px;   /* largura máxima */
+  margin: 2rem auto;  /* centralizado + espaçamento vertical */
+}
+
+/* encaixa com seu header petróleo */
+.table-dark { background-color: #06292F !important; }
+
+.sticky-top { position: sticky; top: 0; z-index: 5; }
+.nowrap { white-space: nowrap; }
+.fit { width: 1%; white-space: nowrap; }
+.desc { max-width: 440px; }
+
+/* avatar simples com inicial do solicitante */
+.avatar{
+  width: 28px; height: 28px; border-radius: 50%;
+  display:flex; align-items:center; justify-content:center;
+  background: rgba(79,209,197,.15);
+  color:#0f766e; font-weight:700; font-size:.9rem;
+}
+
+/* hover suave na linha */
+.row-hover { transition: background-color .2s ease; }
+.row-hover:hover { background-color: rgba(79,209,197,.07); }
+
+/* botões mais “clean” */
+.btn-outline-primary { --bs-btn-hover-bg:#0d6efd; --bs-btn-hover-color:#fff; }
+.btn-outline-secondary { --bs-btn-hover-bg:#6c757d; --bs-btn-hover-color:#fff; }
+.btn-outline-danger { --bs-btn-hover-bg:#dc3545; --bs-btn-hover-color:#fff; }

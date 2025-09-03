@@ -1,0 +1,41 @@
+/* base atual */
+.tecnicos-wrapper .card { border: 0; border-radius: 14px; }
+.tecnicos-wrapper .card-header { background: #fff; border-bottom: 1px solid #edf2f4; }
+.table > :not(caption) > * > * { vertical-align: middle; }
+.nowrap { white-space: nowrap; }
+.fit { width: 1%; white-space: nowrap; }
+.table thead th { font-weight: 700; }
+.btn-group .btn, .btn { border-radius: .6rem; }
+.badge { font-weight: 700; }
+
+/* ---- realce por status (filete no topo) ---- */
+.fx-card { position: relative; transition: transform .25s ease, box-shadow .25s ease, filter .25s ease; }
+.fx-card::before{
+  content:""; position:absolute; inset:0 0 auto 0; height:4px; border-radius:14px 14px 0 0;
+}
+.fx-open::before     { background: #dc3545; }   /* danger */
+.fx-progress::before { background: #ffc107; }   /* warning */
+.fx-done::before     { background: #198754; }   /* success */
+
+/* ---- efeito “focus in group”: levanta a card em hover, demais recuam ---- */
+.panels-hover:hover .fx-card{ filter: saturate(.85) brightness(.98); opacity:.85; }
+.panels-hover .fx-card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,.15);
+  filter:none; opacity:1; z-index: 3;
+}
+
+/* rows com highlight suave e ações que aparecem só no hover */
+.table .row-ghost { transition: background-color .18s ease; }
+.table .row-ghost:hover{ background-color: rgba(79,209,197,.08); }
+
+.action-fade{ opacity:.0; transform: translateY(-2px); transition: opacity .18s ease, transform .18s ease; }
+.row-ghost:hover .action-fade{ opacity:1; transform: translateY(0); }
+
+/* acessibilidade: respeita redução de movimento */
+@media (prefers-reduced-motion: reduce){
+  .fx-card, .action-fade, .row-ghost { transition: none !important; }
+}
+
+/* pequenas melhorias visuais */
+.table thead.table-light { --bs-table-bg:#f8fafb; }

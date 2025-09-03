@@ -1,0 +1,89 @@
+.bggray {
+  background-color: #032830;
+}
+
+/* Paleta e fundo do header */
+.bg-helpdesk {
+  /* tom petróleo do seu print */
+  background-color: #06292f; /* ajuste fino se quiser (#02292e, #06323a...) */
+}
+
+/* Marca alinhadinha */
+.navbar-brand .brand-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  object-fit: cover;
+  display: block;
+}
+
+.navbar-brand .brand-text {
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  line-height: 1; /* alinha verticalmente com o logo */
+}
+
+/* Links padrão + suavidade */
+.navbar .nav-link {
+  color: #eaf3f5;
+  opacity: 0.9;
+  padding: 0.5rem 0.75rem;
+  position: relative;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Efeito underline animado */
+.navbar .nav-link.nav-anim::after {
+  content: "";
+  position: absolute;
+  left: 0.6rem;
+  right: 0.6rem;
+  bottom: 0.25rem;
+  height: 2px;
+  background: #4fd1c5; /* um teal claro que combina */
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+  border-radius: 2px;
+}
+
+.navbar .nav-link.nav-anim:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.navbar .nav-link.nav-anim:hover::after,
+.navbar .nav-link.nav-anim.active::after {
+  transform: scaleX(1);
+}
+
+/* Estado ativo (rota atual) */
+.navbar .nav-link.active {
+  color: #ffffff;
+  opacity: 1;
+  font-weight: 700;
+}
+
+/* Toggler visível no fundo escuro (usa navbar-dark) */
+.navbar-dark .navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.25);
+}
+.navbar-dark .navbar-toggler:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.15);
+}
+
+/* Espaçamento entre logo e menu */
+@media (min-width: 992px) {
+  .navbar .navbar-nav {
+    margin-left: 1rem;
+  }
+}
+
+/* Acessibilidade: reduz animações se o usuário preferir */
+@media (prefers-reduced-motion: reduce) {
+  .navbar .nav-link,
+  .navbar .nav-link::after {
+    transition: none;
+  }
+}
