@@ -4,7 +4,7 @@ import { RouterOutlet } from '@angular/router';
 // seus componentes standalone
 import { HeaderMenuComponent } from "../../components/header-menu/header-menu.component";
 import { CriarChamadoComponent } from '../../components/criar-chamado/criar-chamado.component';
-import { ChamadosTableComponent, Chamado as UiChamado, StatusChamado as UiStatus } from '../../pages/chamados-table/chamados-table.component';
+import { Chamado as UiChamado, StatusChamado as UiStatus } from '../../pages/chamados-table/chamados-table.component';
 
 // models do backend
 import { ChamadoResponse } from '../../core/models/chamado.model';
@@ -14,7 +14,7 @@ import { UUID } from '../../core/uuid.type';
 @Component({
   selector: 'app-layout',
   standalone: true, // ⬅️ necessário para usar "imports" no decorator
-  imports: [HeaderMenuComponent, RouterOutlet, CriarChamadoComponent, ChamadosTableComponent],
+  imports: [HeaderMenuComponent, RouterOutlet, CriarChamadoComponent],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css'] // ⬅️ plural
 })

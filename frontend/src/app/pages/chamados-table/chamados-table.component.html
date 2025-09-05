@@ -53,32 +53,69 @@
 
                     <td class="fit">
                         <div class="btn-group btn-group-sm" role="group" aria-label="Ações">
-                            <button type="button" class="btn btn-outline-primary" (click)="onMudarStatus(c)"
-                                title="Mudar status">
-                                <i class="bi bi-patch-check-fill"></i>
+
+                            <!-- USUARIO_COMUM: só excluir -->
+                            <button *ngIf="canExcluir(c)" type="button" class="btn btn-outline-danger"
+                                (click)="onExcluir(c)" title="Excluir">
+                                <i class="bi bi-trash3"></i>
                             </button>
 
-                            <!-- atribuir técnico: dropdown simples -->
-                            <div class="btn-group btn-group-sm dropstart" role="group">
-                                <button type="button" class="btn btn-outline-secondary dropdown-toggle"
-                                    data-bs-toggle="dropdown" aria-expanded="false" title="Atribuir técnico">
-                                    <i class="bi bi-person-vcard-fill"></i>
+                            <!-- TECNICO: atribuir pra mim (se em aberto e sem técnico) -->
+                            <button *ngIf="canAtribuirPraMim(c)" type="button" class="btn btn-outline-secondary"
+                                (click)="onAtribuirPraMim(c)" title="Assumir este chamado">
+                                <i class="bi bi-person-check"></i>
+                            </button>
+
+                            <!-- TECNICO: alterar status -->
+                            <button *ngIf="canMarcarAndamento(c)" type="button" class="btn btn-outline-primary"
+                                (click)="onSetStatus(c, 'EM_ANDAMENTO')" title="Marcar como em andamento">
+                                <i class="bi bi-play-fill"></i>
+                            </button>
+
+                            <button *ngIf="canMarcarConcluido(c)" type="button" class="btn btn-outline-success"
+                                (click)="onSetStatus(c, 'CONCLUIDO')" title="Marcar como concluído">
+                                <i class="bi bi-check2-circle"></i>
+                            </button>
+
+                            <!-- TECNICO: comentar -->
+                            <button *ngIf="canComentar(c)" type="button" class="btn btn-outline-dark"
+                                (click)="onComentar(c)" title="Adicionar comentário">
+                                <i class="bi bi-chat-text"></i>
+                            </button>
+
+                            <div *ngIf="role==='ADMIN'" class="btn-group btn-group-sm dropstart">
+                                <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                                    title="Designar técnico">
+                                    <i class="bi bi-person-plus"></i>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end p-0 overflow-auto"
                                     style="max-height: 240px;">
-                                    <li *ngFor="let t of tecnicos">
-                                        <button type="button" class="dropdown-item" (click)="onAtribuir(c, t)">
-                                            {{ t }}
+                                    <li *ngFor="let t of tecnicos"><!-- tecnicos: [{id, nome}] -->
+                                        <button type="button" class="dropdown-item" (click)="onDesignar(c, t.id)">
+                                            {{ t.nome }}
                                         </button>
-                                    </li>
-                                    <li *ngIf="!tecnicos?.length">
-                                        <span class="dropdown-item-text text-muted">Sem técnicos</span>
                                     </li>
                                 </ul>
                             </div>
 
-                            <button type="button" class="btn btn-outline-danger" (click)="onExcluir(c)" title="Excluir">
-                                <i class="bi bi-trash3"></i>
+                            <!-- ADMIN: setar status livremente -->
+                            <button *ngIf="role==='ADMIN'" class="btn btn-outline-primary btn-sm"
+                                (click)="onSetStatus(c, 'EM_ANDAMENTO')">
+                                <i class="bi bi-play-fill"></i>
+                            </button>
+                            <button *ngIf="role==='ADMIN'" class="btn btn-outline-success btn-sm"
+                                (click)="onSetStatus(c, 'CONCLUIDO')">
+                                <i class="bi bi-check2-circle"></i>
+                            </button>
+                            <button *ngIf="role==='ADMIN'" class="btn btn-outline-secondary btn-sm"
+                                (click)="onSetStatus(c, 'EM_ABERTO')">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+
+                            <!-- ADMIN: cancelar -->
+                            <button *ngIf="role==='ADMIN'" class="btn btn-outline-danger btn-sm"
+                                (click)="onCancelar(c)">
+                                <i class="bi bi-x-octagon"></i>
                             </button>
                         </div>
                     </td>

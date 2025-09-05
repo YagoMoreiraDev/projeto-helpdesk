@@ -1,9 +1,10 @@
+// src/app/services/chamado.service.ts
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import {
-    Chamado,
+    Chamado as ChamadoApi,
     ChamadoCreateRequest,
     ChamadoResponse,
     ComentarioRequest,
@@ -11,7 +12,7 @@ import {
 } from '../core/models/chamado.model';
 import { UUID } from '../core/uuid.type';
 import { BaseHttpService } from './base-http.service';
-
+import { StatusChamado } from '../core/models/status-chamado.enum';
 
 @Injectable({ providedIn: 'root' })
 export class ChamadoService extends BaseHttpService {
@@ -19,44 +20,60 @@ export class ChamadoService extends BaseHttpService {
     private readonly API = environment.apiUrl ?? 'http://localhost:8080';
     private readonly PATH = `${this.API}/api/chamados`;
 
-
-    abrirChamado(solicitanteId: UUID, req: ChamadoCreateRequest): Observable<ChamadoResponse> {
-        const params = this.toParams({ solicitanteId });
-        return this.http.post<ChamadoResponse>(this.PATH, req, { params });
+    abrirChamado(req: ChamadoCreateRequest): Observable<ChamadoResponse> {
+        return this.http.post<ChamadoResponse>(this.PATH, req);
     }
 
-
-    assumirChamado(chamadoId: UUID, tecnicoId: UUID): Observable<ChamadoResponse> {
-        const params = this.toParams({ tecnicoId });
-        return this.http.post<ChamadoResponse>(`${this.PATH}/${chamadoId}/assumir`, null, { params });
+    assumirChamado(chamadoId: UUID): Observable<ChamadoResponse> {
+        return this.http.post<ChamadoResponse>(`${this.PATH}/${chamadoId}/assumir`, null);
     }
 
-
-    comentarChamado(chamadoId: UUID, autorId: UUID, req: ComentarioRequest): Observable<ChamadoResponse> {
-        const params = this.toParams({ autorId });
-        return this.http.post<ChamadoResponse>(`${this.PATH}/${chamadoId}/comentarios`, req, { params });
+    comentarChamado(chamadoId: UUID, req: ComentarioRequest): Observable<ChamadoResponse> {
+        return this.http.post<ChamadoResponse>(`${this.PATH}/${chamadoId}/comentarios`, req);
     }
 
-
-    alterarStatus(chamadoId: UUID, autorId: UUID, req: StatusChangeRequest): Observable<ChamadoResponse> {
-        const params = this.toParams({ autorId });
-        return this.http.post<ChamadoResponse>(`${this.PATH}/${chamadoId}/status`, req, { params });
+    alterarStatus(chamadoId: UUID, req: StatusChangeRequest): Observable<ChamadoResponse> {
+        return this.http.post<ChamadoResponse>(`${this.PATH}/${chamadoId}/status`, req);
     }
 
-
-    listarMeusChamados(solicitanteId: UUID): Observable<Chamado[]> {
-        const params = this.toParams({ solicitanteId });
-        return this.http.get<Chamado[]>(`${this.PATH}/meus`, { params });
+    // VISÕES por papel
+    listarMeusChamados(): Observable<ChamadoApi[]> {
+        return this.http.get<ChamadoApi[]>(`${this.PATH}/meus`);
+    }
+    listarPorTecnico(): Observable<ChamadoApi[]> {
+        return this.http.get<ChamadoApi[]>(`${this.PATH}/tecnico`);
+    }
+    listarEmAberto(): Observable<ChamadoApi[]> {
+        return this.http.get<ChamadoApi[]>(`${this.PATH}/abertos`);
+    }
+    listarTodos(): Observable<ChamadoApi[]> {
+        return this.http.get<ChamadoApi[]>(this.PATH);
     }
 
-
-    listarPorTecnico(tecnicoId: UUID): Observable<Chamado[]> {
-        const params = this.toParams({ tecnicoId });
-        return this.http.get<Chamado[]>(`${this.PATH}/tecnico`, { params });
+    listarSemTecnico(): Observable<ChamadoApi[]> {
+        return this.http.get<ChamadoApi[]>(`${this.PATH}/sem-tecnico`);
     }
 
+    listarPorStatus(status: StatusChamado) {
+        return this.http.get<ChamadoApi[]>(
+            this.PATH,
+            { params: { status } } // envia ?status=ABERTO|EM_ATENDIMENTO|...
+        );
+    }
 
-    listarTodos(): Observable<Chamado[]> {
-        return this.http.get<Chamado[]>(this.PATH);
+    designar(chamadoId: UUID, tecnicoId: UUID): Observable<ChamadoResponse> {
+        return this.http.post<ChamadoResponse>(`${this.PATH}/${chamadoId}/designar`, null, {
+            params: this.toParams({ tecnicoId })
+        });
+    }
+
+    // cancelar (cliente ou admin)
+    cancelarChamado(chamadoId: UUID, detalhe?: string): Observable<ChamadoResponse> {
+        return this.http.post<ChamadoResponse>(`${this.PATH}/${chamadoId}/cancelar`, { detalhe });
+    }
+
+    // (se ainda tiver excluir físico no front, deixe como alias para cancelar)
+    excluirChamado(chamadoId: UUID): Observable<ChamadoResponse> {
+        return this.cancelarChamado(chamadoId, 'Cancelado pelo solicitante');
     }
 }

@@ -13,6 +13,17 @@ export interface Chamado {
   status: StatusChamado;
 }
 
+function dedup<T extends { id: string }>(arr: T[]): T[] {
+  const seen = new Set<string>();
+  return arr.filter(x => (seen.has(x.id) ? false : (seen.add(x.id), true)));
+}
+function upsertById<T extends { id: string }>(arr: T[], item: T): T[] {
+  const i = arr.findIndex(a => a.id === item.id);
+  if (i === -1) return [item, ...arr];
+  const clone = arr.slice(); clone[i] = { ...clone[i], ...item };
+  return clone;
+}
+
 @Component({
   selector: 'app-chamados-tecnicos',
   standalone: true,

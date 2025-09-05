@@ -1,4 +1,3 @@
-
 import { UUID } from '../uuid.type';
 import { Prioridade } from './prioridade.enum';
 import { StatusChamado } from './status-chamado.enum';
@@ -6,12 +5,12 @@ import { TipoEvento } from './tipo-evento.enum';
 
 export interface ChamadoEvento {
     id: UUID;
-    quando: string; // ISO string (Instant)
+    quando: string;
     tipo: TipoEvento;
     autorNome?: string | null;
     detalhe?: string | null;
-    de?: StatusChamado | null; // statusAnterior
-    para?: StatusChamado | null; // statusNovo
+    de?: StatusChamado | null;
+    para?: StatusChamado | null;
 }
 
 export interface Chamado {
@@ -24,8 +23,8 @@ export interface Chamado {
     solicitanteNome?: string | null;
     tecnicoId?: UUID | null;
     tecnicoNome?: string | null;
-    createdAt: string; // ISO
-    closedAt?: string | null; // ISO
+    createdAt: string;
+    closedAt?: string | null;
     eventos: ChamadoEvento[];
 }
 
@@ -40,8 +39,8 @@ export interface ComentarioRequest {
 }
 
 export interface StatusChangeRequest {
-    novoStatus: StatusChamado;
-    detalhe: string;
+    novoStatus: StatusChamado; // enum do core
+    detalhe: string;           // é obrigatório no seu DTO
 }
 
 export type ChamadoResponse = Chamado;

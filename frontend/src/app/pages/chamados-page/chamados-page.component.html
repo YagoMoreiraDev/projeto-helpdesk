@@ -1,7 +1,7 @@
+<!-- src/app/pages/chamados-page/chamados-page.component.html -->
 <section class="container py-4">
     <h2 class="mb-3">Meus chamados</h2>
-    <app-chamados-table [chamados]="listaChamados" [tecnicos]="['Ana Oliveira','Carlos Silva','Marcos Lima']"
-        (alterarStatus)="handleAlterarStatus($event)" (excluir)="handleExcluir($event)"
-        (atribuirTecnico)="handleAtribuir($event)">
+
+    <app-chamados-table [role]="'USUARIO_COMUM'" [chamados]="listaChamados" (excluir)="handleExcluir($event)">
     </app-chamados-table>
 </section>

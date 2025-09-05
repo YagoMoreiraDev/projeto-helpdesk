@@ -1,0 +1,18 @@
+<section class="container py-4">
+    <h2 class="mb-3">Todos os chamados</h2>
+
+    <div class="d-flex gap-2 mb-3">
+        <button class="btn btn-outline-secondary btn-sm" (click)="load()">Recarregar</button>
+        <div class="btn-group btn-group-sm">
+            <button class="btn btn-outline-dark" (click)="filtrar(ST.ABERTO)">Abertos</button>
+            <button class="btn btn-outline-dark" (click)="filtrar(ST.EM_ATENDIMENTO)">Em atendimento</button>
+            <button class="btn btn-outline-dark" (click)="filtrar(ST.CONCLUIDO)">Concluídos</button>
+            <button class="btn btn-outline-dark" (click)="filtrar(ST.CANCELADO)">Cancelados</button>
+            <button class="btn btn-outline-dark" (click)="clearFiltro()">Todos</button>
+        </div>
+    </div>
+
+    <app-chamados-table [role]="'ADMIN'" [chamados]="lista" [tecnicos]="tecnicos" (designar)="onDesignar($event)"
+        (alterarStatus)="onAlterarStatus($event)" (cancelar)="onCancelar($event)">
+    </app-chamados-table>
+</section>

@@ -11,6 +11,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- menu da esquerda -->
             <ul class="navbar-nav ms-3 mb-2 mb-lg-0 fw-semibold">
                 <li class="nav-item" *ngFor="let item of items()">
                     <!-- se for 'Criar Chamado' abrimos modal -->
@@ -25,6 +26,23 @@
                             {{ item.label }}
                         </a>
                     </ng-template>
+                </li>
+            </ul>
+
+            <!-- lado direito: usuário + sair -->
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item d-flex align-items-center me-2">
+                    <span class="navbar-text small">
+                        {{ user()?.nome || user()?.email || 'Usuário' }}
+                    </span>
+                </li>
+                <li class="nav-item">
+                    <button class="btn btn-outline-light btn-sm" type="button" (click)="logout()"
+                        [disabled]="isLoggingOut">
+                        <span *ngIf="isLoggingOut" class="spinner-border spinner-border-sm me-1"
+                            aria-hidden="true"></span>
+                        Sair
+                    </button>
                 </li>
             </ul>
         </div>

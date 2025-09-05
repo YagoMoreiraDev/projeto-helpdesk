@@ -86,7 +86,7 @@ export class CriarChamadoComponent {
     this.errorMsg = '';
 
     this.chamadoService
-      .abrirChamado(this.solicitanteId, req)
+      this.chamadoService.abrirChamado(req)
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
         next: (resp) => {

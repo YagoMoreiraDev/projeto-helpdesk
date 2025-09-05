@@ -1,0 +1,55 @@
+<div class="min-vh-100 d-flex align-items-center justify-content-center bg-gradient">
+    <main class="container">
+        <section class="row justify-content-center">
+            <div class="col-11 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+                <div class="card shadow-lg border-0">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-center mb-3">
+                            <img src="assets/images/logo-ce-sedih.png" alt="Logo" style="width: 9rem;">
+                        </div>
+
+                        <h5 class="text-center mb-4">Acesso ao Sistema</h5>
+
+                        <form [formGroup]="loginForm" (ngSubmit)="login()">
+                            <div class="mb-3">
+                                <label class="form-label">E-mail</label>
+                                <input type="email" class="form-control"
+                                    [class.is-invalid]="f['email'].touched && f['email'].invalid"
+                                    formControlName="email" placeholder="seuemail@dominio.com">
+                                <div class="invalid-feedback">Informe um e-mail válido.</div>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label">Senha</label>
+                                <input type="password" class="form-control"
+                                    [class.is-invalid]="f['senha'].touched && f['senha'].invalid"
+                                    formControlName="senha" placeholder="********">
+                                <div class="invalid-feedback">A senha deve ter ao menos 6 caracteres.</div>
+                            </div>
+
+                            <div *ngIf="loginError" class="alert alert-danger py-2 my-3 text-center">
+                                {{ loginError }}
+                            </div>
+
+                            <div class="d-grid mt-3">
+                                <button class="btn btn-success" type="submit" [disabled]="loginForm.invalid || loading">
+                                    <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                                    Entrar
+                                </button>
+                            </div>
+                        </form>
+
+                        <div class="text-center mt-3">
+                            <small class="text-muted">Não tenho conta.
+                                <a href="http://suporte.direitoshumanos.ce.gov.br/" target="_blank"
+                                    class="link-success">
+                                    Criar conta agora.
+                                </a>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>

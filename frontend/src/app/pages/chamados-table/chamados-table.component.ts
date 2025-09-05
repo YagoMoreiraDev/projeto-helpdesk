@@ -1,6 +1,8 @@
+// src/app/pages/chamados-table/chamados-table.component.ts
 import { CommonModule, DatePipe, NgClass } from '@angular/common';
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 
+export type Role = 'USUARIO_COMUM' | 'TECNICO' | 'ADMIN';
 export type StatusChamado = 'CONCLUIDO' | 'EM_ABERTO' | 'EM_ANDAMENTO';
 
 export interface Chamado {
@@ -13,6 +15,8 @@ export interface Chamado {
   status: StatusChamado;
 }
 
+export interface TecnicoItem { id: string; nome: string; }
+
 @Component({
   selector: 'app-chamados-table',
   standalone: true,
@@ -21,52 +25,48 @@ export interface Chamado {
   styleUrls: ['./chamados-table.component.css']
 })
 export class ChamadosTableComponent implements OnInit {
-  /** dados (pode vir da API ou do pai) */
   @Input() chamados: Chamado[] = [];
+  @Input() tecnicos: TecnicoItem[] = [];
 
-  /** lista de técnicos para atribuição */
-  @Input() tecnicos: string[] = ['Ana Oliveira', 'Carlos Silva', 'Marcos Lima'];
+  // 🔹 papel do usuário atual
+  @Input() role: Role = 'USUARIO_COMUM';
 
-  /** eventos de ação */
+  // Eventos para o container
   @Output() alterarStatus = new EventEmitter<{ id: string; novo: StatusChamado }>();
   @Output() excluir = new EventEmitter<string>();
-  @Output() atribuirTecnico = new EventEmitter<{ id: string; tecnico: string }>();
+  @Output() atribuirPraMim = new EventEmitter<string>();
+  @Output() comentar = new EventEmitter<{ id: string; mensagem: string }>();
+
+  @Output() designar = new EventEmitter<{ id: string; tecnicoId: string }>();
+  @Output() cancelar = new EventEmitter<string>();
+
+  onDesignar(c: Chamado, tecnicoId: string) { this.designar.emit({ id: c.id, tecnicoId }); }
+  onCancelar(c: Chamado) { this.cancelar.emit(c.id); }
 
   ngOnInit(): void {
-    if (!this.chamados || this.chamados.length === 0) {
-      // cria mocks caso não seja passado nenhum chamado
+    if (!this.chamados?.length) {
+      // mocks só para visual
       this.chamados = [
         {
-          id: '0001',
-          solicitante: 'André Costa',
-          tipo: 'Instalação de Rede',
-          descricao: 'Rede lenta no setor A.',
-          dataHora: new Date().toISOString(),
-          tecnico: 'Carlos Silva',
-          status: 'EM_ANDAMENTO'
+          id: '0001', solicitante: 'André Costa', tipo: 'Instalação de Rede',
+          descricao: 'Rede lenta no setor A.', dataHora: new Date().toISOString(),
+          tecnico: 'Carlos Silva', status: 'EM_ANDAMENTO'
         },
         {
-          id: '0002',
-          solicitante: 'Júlia Maria',
-          tipo: 'Recuperação de Dados',
-          descricao: 'HD externo não reconhece.',
-          dataHora: new Date().toISOString(),
-          tecnico: null,
-          status: 'EM_ABERTO'
+          id: '0002', solicitante: 'Júlia Maria', tipo: 'Recuperação de Dados',
+          descricao: 'HD externo não reconhece.', dataHora: new Date().toISOString(),
+          tecnico: null, status: 'EM_ABERTO'
         },
         {
-          id: '0003',
-          solicitante: 'Carlos Silva',
-          tipo: 'Suporte de Software',
-          descricao: 'Erro ao abrir sistema XPTO.',
-          dataHora: new Date().toISOString(),
-          tecnico: 'Ana Oliveira',
-          status: 'CONCLUIDO'
-        }
+          id: '0003', solicitante: 'Carlos Silva', tipo: 'Suporte de Software',
+          descricao: 'Erro ao abrir sistema XPTO.', dataHora: new Date().toISOString(),
+          tecnico: 'Ana Oliveira', status: 'CONCLUIDO'
+        },
       ];
     }
   }
 
+  // badges (sem mudança)
   badgeClasses(st: StatusChamado) {
     switch (st) {
       case 'CONCLUIDO': return 'text-bg-success';
@@ -82,21 +82,24 @@ export class ChamadosTableComponent implements OnInit {
     }
   }
 
-  proximoStatus(atual: StatusChamado): StatusChamado {
-    if (atual === 'EM_ABERTO') return 'EM_ANDAMENTO';
-    if (atual === 'EM_ANDAMENTO') return 'CONCLUIDO';
-    return 'EM_ABERTO';
-  }
+  // 🔎 regras de visibilidade por papel
+  isCliente() { return this.role === 'USUARIO_COMUM'; }
+  isTecnico() { return this.role === 'TECNICO'; }
+  isAdmin() { return this.role === 'ADMIN'; }
 
-  onMudarStatus(c: Chamado) {
-    const novo = this.proximoStatus(c.status);
-    this.alterarStatus.emit({ id: c.id, novo });
-  }
+  // botões por linha
+  canExcluir(c: Chamado) { return this.isCliente(); }
+  canAtribuirPraMim(c: Chamado) { return this.isTecnico() && c.status === 'EM_ABERTO' && !c.tecnico; }
+  canMarcarAndamento(c: Chamado) { return this.isTecnico() && c.status !== 'EM_ANDAMENTO'; }
+  canMarcarConcluido(c: Chamado) { return this.isTecnico() && c.status !== 'CONCLUIDO'; }
+  canComentar(c: Chamado) { return this.isTecnico(); } // se quiser, inclua ADMIN
 
+  // emissores
   onExcluir(c: Chamado) { this.excluir.emit(c.id); }
-
-  onAtribuir(c: Chamado, tecnico: string) {
-    if (!tecnico) return;
-    this.atribuirTecnico.emit({ id: c.id, tecnico });
+  onAtribuirPraMim(c: Chamado) { this.atribuirPraMim.emit(c.id); }
+  onSetStatus(c: Chamado, novo: StatusChamado) { this.alterarStatus.emit({ id: c.id, novo }); }
+  onComentar(c: Chamado) {
+    const mensagem = prompt('Comentário do técnico:');
+    if (mensagem && mensagem.trim()) this.comentar.emit({ id: c.id, mensagem: mensagem.trim() });
   }
 }
