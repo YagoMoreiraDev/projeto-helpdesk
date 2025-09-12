@@ -18,6 +18,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class ChamadoService {
@@ -25,6 +26,10 @@ public class ChamadoService {
     private final UsuarioRepository usuarioRepo;
     private final ChamadoRepository chamadoRepo;
     private final NotificationService notifications;
+
+    private final AtomicLong lastUpdate = new AtomicLong(System.currentTimeMillis());
+    private void touch() { lastUpdate.set(System.currentTimeMillis()); }
+    public long getLastUpdate() { return lastUpdate.get(); }
 
     public ChamadoService(UsuarioRepository usuarioRepo,
                           ChamadoRepository chamadoRepo,
@@ -55,7 +60,7 @@ public class ChamadoService {
         notifications.sendToRole(Role.ADMIN, dto);
         notifications.sendToRole(Role.TECNICO, dto);
         notifications.sendToUser(solicitante.getId(), dto);
-
+        touch();
         return c;
     }
 
@@ -76,6 +81,7 @@ public class ChamadoService {
         );
         notifications.sendToUser(tecnico.getId(), dto);
 
+        touch();
         return c;
     }
 
@@ -103,6 +109,7 @@ public class ChamadoService {
         if (c.getTecnicoResponsavel() != null) notifications.sendToUser(c.getTecnicoResponsavel().getId(), dto);
         if (c.getSolicitante() != null) notifications.sendToUser(c.getSolicitante().getId(), dto);
 
+        touch();
         return c;
     }
 
@@ -111,6 +118,8 @@ public class ChamadoService {
         Usuario autor = getUsuario(autorId);
         Chamado c = getChamado(chamadoId);
         c.comentar(autor, req.mensagem());
+
+        touch();
         return c;
     }
 
@@ -134,6 +143,7 @@ public class ChamadoService {
                 throw new IllegalStateException("Chamado com técnico atribuído não pode ser excluído pelo solicitante.");
             }
         }
+        touch();
         chamadoRepo.delete(c);
     }
 
@@ -159,6 +169,7 @@ public class ChamadoService {
         );
         notifications.sendToUser(tecnico.getId(), dto);
 
+        touch();
         return c;
     }
 
@@ -192,6 +203,7 @@ public class ChamadoService {
         if (c.getTecnicoResponsavel() != null) notifications.sendToUser(c.getTecnicoResponsavel().getId(), dto);
         if (c.getSolicitante() != null) notifications.sendToUser(c.getSolicitante().getId(), dto);
 
+        touch();
         return c;
     }
 

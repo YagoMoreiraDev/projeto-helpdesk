@@ -59,6 +59,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/login", "/auth/refresh", "/auth/logout").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/usuarios").permitAll()
                 .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
                 // ⬇️ SSE precisa estar autenticado (token via query ?access_token=...):
                 .requestMatchers(HttpMethod.GET, "/api/notifications/stream").authenticated()

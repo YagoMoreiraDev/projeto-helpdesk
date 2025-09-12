@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -86,7 +87,7 @@ public class ChamadoController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')") // opcional: só admin lista tudo
+    @PreAuthorize("hasAnyRole('ADMIN', 'TECNICO')") // opcional: só admin lista tudo
     public ResponseEntity<List<ChamadoResponse>> todos() {
         return ResponseEntity.ok(chamadoService.listarTodos()
                 .stream().map(this::toResponse).toList());
@@ -147,6 +148,11 @@ public class ChamadoController {
         return ResponseEntity.ok(
                 chamadoService.listarPorStatus(status).stream().map(this::toResponse).toList()
         );
+    }
+
+    @GetMapping("/ping")
+    public Map<String, Long> ping() {
+        return Map.of("lastUpdate", chamadoService.getLastUpdate());
     }
 
     // ---- helpers ----
