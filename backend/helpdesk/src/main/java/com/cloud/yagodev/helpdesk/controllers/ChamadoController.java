@@ -164,6 +164,28 @@ public class ChamadoController {
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
     }
 
+    /** Retorna o “código curto” (6 últimos hex do UUID) de um chamado específico. */
+    @GetMapping("/{id}/codigo")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TECNICO') or hasRole('USUARIO_COMUM')")
+    public ResponseEntity<ChamadoCodigoDto> codigoDeChamado(@PathVariable("id") UUID chamadoId) {
+        return ResponseEntity.ok(chamadoService.codigoDeChamado(chamadoId));
+    }
+
+    /** Lista {id, codigo} de todos os chamados (útil p/ relatórios; protegi para ADMIN). */
+    @GetMapping("/codigos")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<ChamadoCodigoDto>> listarCodigosCurtos() {
+        return ResponseEntity.ok(chamadoService.listarCodigosCurtos());
+    }
+
+    /** Busca por código curto. Pode retornar 0, 1 ou N chamados (se colidir). */
+    @GetMapping("/por-codigo/{codigo}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TECNICO')")
+    public ResponseEntity<List<ChamadoResponse>> buscarPorCodigo(@PathVariable("codigo") String codigo) {
+        var list = chamadoService.buscarPorCodigoCurto(codigo);
+        return ResponseEntity.ok(list.stream().map(this::toResponse).toList());
+    }
+
     private ChamadoResponse toResponse(Chamado c) {
         var eventos = c.getEventos().stream().map(ev -> new ChamadoEventoResponse(
                 ev.getId(),

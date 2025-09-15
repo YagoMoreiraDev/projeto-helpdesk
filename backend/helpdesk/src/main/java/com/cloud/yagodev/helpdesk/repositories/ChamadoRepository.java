@@ -63,4 +63,19 @@ public interface ChamadoRepository extends JpaRepository<Chamado, UUID> {
         order by bucket
     """, nativeQuery = true)
     List<TimeBucketCount> countPerMonth(@Param("start") Instant start, @Param("end") Instant end);
+
+    // Lista pares {id, codigo} para todos
+    @Query(value = """
+        select c.id as id, right(replace(c.id::text, '-', ''), 6) as codigo
+        from tb_chamado c
+    """, nativeQuery = true)
+    List<ChamadoShortCodeProjection> listShortCodes();
+
+    // Busca chamados cujo código curto == :codigo (case-insensitive)
+    @Query(value = """
+        select *
+        from tb_chamado c
+        where right(replace(c.id::text, '-', ''), 6) ilike :codigo
+    """, nativeQuery = true)
+    List<Chamado> findByShortCode(@Param("codigo") String codigo);
 }

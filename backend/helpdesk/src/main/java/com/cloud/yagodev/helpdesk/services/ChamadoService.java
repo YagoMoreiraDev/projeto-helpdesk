@@ -251,6 +251,37 @@ public class ChamadoService {
         return chamadoRepo.findById(id).orElseThrow(() -> new NoSuchElementException("Chamado não encontrado"));
     }
 
+    // --- utilitário local ---
+    private static String shortCode(UUID id) {
+        String hex = id.toString().replace("-", "");
+        return hex.substring(hex.length() - 6).toUpperCase();
+    }
+
+    /** Retorna {id, codigo} para um chamado específico. */
+    @Transactional(readOnly = true)
+    public ChamadoCodigoDto codigoDeChamado(UUID chamadoId) {
+        Chamado c = getChamado(chamadoId);
+        return new ChamadoCodigoDto(c.getId(), shortCode(c.getId()));
+    }
+
+    /** Lista {id, codigo} para todos os chamados (use com parcimônia; deixei para ADMIN). */
+    @Transactional(readOnly = true)
+    public List<ChamadoCodigoDto> listarCodigosCurtos() {
+        return chamadoRepo.listShortCodes().stream()
+                .map(p -> new ChamadoCodigoDto(p.getId(), p.getCodigo().toUpperCase()))
+                .toList();
+    }
+
+    /** Busca chamados pelo código curto (6 hex). Pode haver colisões → retorna lista. */
+    @Transactional(readOnly = true)
+    public List<Chamado> buscarPorCodigoCurto(String codigo) {
+        String normalized = codigo == null ? "" : codigo.trim().toUpperCase();
+        if (!normalized.matches("^[A-F0-9]{6}$")) {
+            throw new IllegalArgumentException("Código deve ter 6 caracteres hexadecimais (0-9, A-F).");
+        }
+        return chamadoRepo.findByShortCode(normalized);
+    }
+
     /** Copiado do Controller para permitir empurrar o chamado inteiro via SSE. */
     private ChamadoResponse toResponse(Chamado c) {
         var eventos = c.getEventos().stream().map(ev -> new ChamadoEventoResponse(
