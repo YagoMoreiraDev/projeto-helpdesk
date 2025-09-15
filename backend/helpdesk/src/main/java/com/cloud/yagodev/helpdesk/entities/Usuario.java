@@ -3,6 +3,7 @@ package com.cloud.yagodev.helpdesk.entities;
 import com.cloud.yagodev.helpdesk.enums.Role;
 import jakarta.persistence.*;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -33,6 +34,13 @@ public class Usuario {
     @Column(nullable = false)
     private boolean ativo = true;
 
+    // -------- PRIMEIRO ACESSO / RESET --------
+    @Column(name = "reset_token")
+    private String resetToken;
+
+    @Column(name = "reset_token_expires")
+    private Instant resetTokenExpires;
+
 
     protected Usuario() {}
 
@@ -48,9 +56,18 @@ public class Usuario {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
     public String getSenhaHash() { return senhaHash; }
+
+    public void setSenhaHash(String senhaHash) {
+        this.senhaHash = senhaHash;
+    }
+
     public Set<Role> getRoles() { return roles; }
     public void setRoles(Set<Role> roles) { this.roles = roles; }
     public boolean isAtivo() { return ativo; }
     public void setAtivo(boolean ativo) { this.ativo = ativo; }
     public boolean hasRole(Role r) { return roles.contains(r); }
+    public String getResetToken() { return resetToken; }
+    public void setResetToken(String resetToken) { this.resetToken = resetToken; }
+    public Instant getResetTokenExpires() { return resetTokenExpires; }
+    public void setResetTokenExpires(Instant resetTokenExpires) { this.resetTokenExpires = resetTokenExpires; }
 }

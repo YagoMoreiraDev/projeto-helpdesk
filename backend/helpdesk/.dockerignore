@@ -1,0 +1,10 @@
+target
+.git
+.gitignore
+README.md
+node_modules
+**/*.iml
+**/.idea
+**/.vscode
+Dockerfile*
+docker-compose*

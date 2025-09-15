@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:16
+    container_name: helpdesk-db
+    environment:
+      POSTGRES_DB: devdb
+      POSTGRES_USER: devuser
+      POSTGRES_PASSWORD: FPQRFKx92rjOBZZD37iY1SS
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d suporte"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks: [app-net]
+
+  api:
+    image: helpdesk-api:latest
+    container_name: helpdesk-api
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SERVER_PORT: 7013
+      SPRING_DATASOURCE_URL: jdbc:postgresql://10.6.0.13:5432/devdb
+      SPRING_DATASOURCE_USERNAME: devuser
+      SPRING_DATASOURCE_PASSWORD: FPQRFKx92rjOBZZD37iY1SS
+      JWT_SECRET: dev-secret-32-bytes-minimo-dev-secret-32
+      CORS_ALLOWED_ORIGINS: http://localhost:5173
+    ports:
+      - "7013:7013"
+    networks: [app-net]
+
+volumes:
+  pgdata:
+
+networks:
+  app-net:
